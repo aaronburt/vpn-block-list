@@ -1,6 +1,6 @@
 # Proton AG VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-06-17T16:41:38Z
+# Last updated: 2026-06-17T16:43:34Z
 
 # AS62371
 # Wholly-owned core network routing infrastructure managed directly by Proton for secure VPN and email transit.
