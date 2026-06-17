@@ -15,7 +15,6 @@ echo "# Auto-generated — do not edit manually" >> "$OUTPUT_FILE"
 echo "# Last updated: $(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> "$OUTPUT_FILE"
 echo "" >> "$OUTPUT_FILE"
 
-# Iterate over each item in the asn.json file
 jq -c '.[]' "$ASN_JSON" | while read -r row; do
   asn=$(echo "$row" | jq -r '.asn')
   name=$(echo "$row" | jq -r '.name')
@@ -26,14 +25,11 @@ jq -c '.[]' "$ASN_JSON" | while read -r row; do
   target_file="$ASN_LIST_DIR/${asn}.json"
   url="https://cdn.jsdelivr.net/gh/ipverse/as-ip-blocks/as/${asn}/aggregated.json"
   
-  # Sanitize name for filename (convert to lowercase, replace special chars with hyphens)
   safe_name=$(echo "$name" | tr '[:upper:]' '[:lower:]' | sed -e 's/[^a-z0-9]/-/g' -e 's/-\+/-/g' -e 's/^-//' -e 's/-$//')
   indiv_file="$INDIVIDUAL_DIR/${safe_name}.txt"
   
-  # Download the source aggregated file, save locally
   if curl -s -f -L -o "$target_file" "$url"; then
     
-    # Write header if individual file is newly created
     if [ ! -f "$indiv_file" ]; then
         echo "# $name VPN Blocklist" > "$indiv_file"
         echo "# Auto-generated — do not edit manually" >> "$indiv_file"
@@ -48,7 +44,6 @@ jq -c '.[]' "$ASN_JSON" | while read -r row; do
       echo "# $description" >> "$indiv_file"
     fi
 
-    # Extract ipv4 and ipv6 prefixes and write to output file
     jq -r '.prefixes.ipv4[]?, .prefixes.ipv6[]?' "$target_file" | tee -a "$OUTPUT_FILE" >> "$indiv_file" || true
     echo "" >> "$OUTPUT_FILE"
     echo "" >> "$indiv_file"
