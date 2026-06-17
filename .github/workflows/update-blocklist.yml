@@ -35,6 +35,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add vpn-blocklist.txt
+          git add vpn-blocklist.txt individual_blocklists/
           git commit -m "chore: auto-update VPN blocklist and ASN caches"
           git push
