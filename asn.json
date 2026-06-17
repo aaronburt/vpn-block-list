@@ -48,5 +48,45 @@
     "asn": 209103,
     "name": "Proton AG (Secure Core)",
     "description": "Secondary network allocation used by Proton to route localized, high-security multi-hop privacy architectures."
+  },
+  {
+    "asn": 209854,
+    "name": "Cyberzone S.A.",
+    "description": "Panama-registered network operated by Surfshark for dedicated VPN server infrastructure."
+  },
+  {
+    "asn": 137409,
+    "name": "GSL Networks Pty LTD",
+    "description": "Australia-based hosting provider heavily utilized by ExpressVPN for global server infrastructure."
+  },
+  {
+    "asn": 206092,
+    "name": "F.N.S. Holdings Limited",
+    "description": "Cyprus-registered network associated with ExpressVPN secure firewall and transit infrastructure."
+  },
+  {
+    "asn": 141039,
+    "name": "PacketHub S.A.",
+    "description": "Panama-registered network used by NordVPN for dedicated bare-metal server operations."
+  },
+  {
+    "asn": 13213,
+    "name": "UK-2 Limited",
+    "description": "UK-based hosting provider serving as a major infrastructure partner for ExpressVPN endpoints."
+  },
+  {
+    "asn": 46253,
+    "name": "IPVanish Inc.",
+    "description": "Wholly-owned network operated directly by IPVanish for consumer VPN services."
+  },
+  {
+    "asn": 22781,
+    "name": "Strong Technology LLC",
+    "description": "IPVanish parent company network carrying primary VPN transit traffic across North America."
+  },
+  {
+    "asn": 62651,
+    "name": "Strong Technology LLC (NetProtect)",
+    "description": "Secondary network allocation by IPVanish parent for DDoS-protected VPN server hosting."
   }
 ]
