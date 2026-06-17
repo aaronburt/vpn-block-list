@@ -1,0 +1,52 @@
+[
+  {
+    "asn": 9009,
+    "name": "M247 Europe SRL / M247 Ltd",
+    "description": "The largest wholesale infrastructure provider for commercial VPNs; heavily utilized by NordVPN, ExpressVPN, and Surfshark."
+  },
+  {
+    "asn": 60068,
+    "name": "Datacamp Limited (CDN77)",
+    "description": "High-bandwidth global transit network frequently leased by premium privacy services including Mullvad, Proton VPN, and Nord."
+  },
+  {
+    "asn": 212238,
+    "name": "Datacamp Limited (Alternative)",
+    "description": "Secondary major routing block managed by Datacamp to expand global VPN and proxy infrastructure hosting."
+  },
+  {
+    "asn": 62240,
+    "name": "Clouvider Limited",
+    "description": "Premium hosting infrastructure in the UK, US, and EU containing netblocks dedicated exclusively to consumer VPN brands."
+  },
+  {
+    "asn": 917,
+    "name": "Misaka Network, Inc.",
+    "description": "High-performance specialized infrastructure favored by privacy services targeting optimized routing across Asian and European internet exchanges."
+  },
+  {
+    "asn": 60636,
+    "name": "LeaseWeb USA, Inc.",
+    "description": "North American routing footprint for LeaseWeb, carrying substantial commercial proxy and anonymizer traffic."
+  },
+  {
+    "asn": 24961,
+    "name": "Hydra Communications Ltd",
+    "description": "Wholesale infrastructure host frequently mapped to commercial anonymization tools and scraping proxies."
+  },
+  {
+    "asn": 216025,
+    "name": "Mullvad VPN AB",
+    "description": "Dedicated corporate network owned and managed directly by Mullvad for their custom, bare-metal server operations."
+  },
+  {
+    "asn": 62371,
+    "name": "Proton AG",
+    "description": "Wholly-owned core network routing infrastructure managed directly by Proton for secure VPN and email transit."
+  },
+  {
+    "asn": 209103,
+    "name": "Proton AG (Secure Core)",
+    "description": "Secondary network allocation used by Proton to route localized, high-security multi-hop privacy architectures."
+  }
+]
