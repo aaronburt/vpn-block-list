@@ -52,4 +52,10 @@ jq -c '.[]' "$ASN_JSON" | while read -r row; do
   fi
 done
 
+echo "# End" >> "$OUTPUT_FILE"
+
+for f in "$INDIVIDUAL_DIR"/*.txt; do
+  echo "# End" >> "$f"
+done
+
 echo "Blocklist successfully built into $OUTPUT_FILE"
