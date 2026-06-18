@@ -1,6 +1,6 @@
 # Datacamp Limited (CDN77) VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-06-17T16:43:33Z
+# Last updated: 2026-06-18T00:17:35Z
 
 # AS60068
 # High-bandwidth global transit network frequently leased by premium privacy services including Mullvad, Proton VPN, and Nord.
@@ -218,3 +218,4 @@
 2a02:6ea0:fc00::/40
 2a02:6ea0:fe00::/39
 
+# End

@@ -1,6 +1,6 @@
 # UK-2 Limited VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-06-17T16:43:35Z
+# Last updated: 2026-06-18T00:17:48Z
 
 # AS13213
 # UK-based hosting provider serving as a major infrastructure partner for ExpressVPN endpoints.
@@ -440,3 +440,4 @@
 2a13:9500:5b::/48
 2a13:9500:5c::/46
 
+# End
