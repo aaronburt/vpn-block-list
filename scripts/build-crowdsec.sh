@@ -33,19 +33,29 @@ while IFS= read -r line || [ -n "$line" ]; do
     fi
 done < "${INPUT_FILE}"
 
-echo "Generated ${DECISIONS_FILE} with ${count} CIDR ranges."
+REPO_CSV_URL="https://raw.githubusercontent.com/aaronburt/vpn-block-list/refs/heads/main/crowdsec/decisions.csv"
 
 cat << EOF > "${OUTPUT_SCRIPT}"
 #!/bin/bash
 # Automatically generated CrowdSec ban list script.
 # Generated on: $(date +"%d %B %Y")
 
-echo "Clearing previous decisions for '${DECISION_REASON}'..."
-cscli decisions delete --reason "${DECISION_REASON}"
+CSV_URL="${REPO_CSV_URL}"
+TMP_CSV="/tmp/decisions.csv"
+
+echo "Downloading decisions CSV..."
+if ! curl -sSL -o "\${TMP_CSV}" "\${CSV_URL}"; then
+    echo "Error: Failed to download decisions CSV." >&2
+    exit 1
+fi
+
+echo "Clearing previous imported decisions..."
+cscli decisions delete --origin cscli-import
 
 echo "Importing ${count} ban decisions..."
-SCRIPT_DIR=\$(cd -- "\$(dirname -- "\${BASH_SOURCE[0]}")" &> /dev/null && pwd)
-cscli decisions import -i "\${SCRIPT_DIR}/decisions.csv"
+cscli decisions import -i "\${TMP_CSV}"
+
+rm -f "\${TMP_CSV}"
 echo "Successfully applied ${count} ban decisions to CrowdSec."
 EOF
 
@@ -57,14 +67,24 @@ cat << EOF > "${DOCKER_SCRIPT}"
 # Automatically generated CrowdSec ban list script (Docker variant).
 # Generated on: $(date +"%d %B %Y")
 
-echo "Clearing previous decisions for '${DECISION_REASON}'..."
-docker exec crowdsec cscli decisions delete --reason "${DECISION_REASON}"
+CSV_URL="${REPO_CSV_URL}"
+TMP_CSV="/tmp/decisions.csv"
+
+echo "Downloading decisions CSV..."
+if ! curl -sSL -o "\${TMP_CSV}" "\${CSV_URL}"; then
+    echo "Error: Failed to download decisions CSV." >&2
+    exit 1
+fi
+
+echo "Clearing previous imported decisions..."
+docker exec crowdsec cscli decisions delete --origin cscli-import
 
 echo "Importing ${count} ban decisions..."
-SCRIPT_DIR=\$(cd -- "\$(dirname -- "\${BASH_SOURCE[0]}")" &> /dev/null && pwd)
-docker cp "\${SCRIPT_DIR}/decisions.csv" crowdsec:/tmp/decisions.csv
+docker cp "\${TMP_CSV}" crowdsec:/tmp/decisions.csv
 docker exec crowdsec cscli decisions import -i /tmp/decisions.csv
 docker exec crowdsec rm /tmp/decisions.csv
+
+rm -f "\${TMP_CSV}"
 echo "Successfully applied ${count} ban decisions to CrowdSec."
 EOF
 
