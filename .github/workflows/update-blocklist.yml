@@ -2,12 +2,13 @@ name: Update Traefik VPN Blocklist
 
 on:
   schedule:
-    - cron: '0 4 * * *'
+    - cron: '0 0 * * *'
   workflow_dispatch:
   push:
     paths:
       - 'asn.json'
       - 'scripts/build-blocklist.sh'
+      - 'scripts/build-crowdsec.sh'
 
 permissions:
   contents: write
@@ -25,6 +26,11 @@ jobs:
       - name: Run Build Script
         run: ./scripts/build-blocklist.sh
 
+      - name: Run CrowdSec Generator
+        run: |
+          chmod +x scripts/build-crowdsec.sh
+          ./scripts/build-crowdsec.sh
+
       - name: Check for Changes
         id: git-diff
         run: |
@@ -35,6 +41,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add vpn-blocklist.txt individual_blocklists/
+          git add vpn-blocklist.txt individual_blocklists/ crowdsec/
           git commit -m "chore: auto-update VPN blocklist and ASN caches"
           git push
