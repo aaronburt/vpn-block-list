@@ -47,3 +47,32 @@ echo "echo \"Successfully applied ${count} ban decisions to CrowdSec.\"" >> "${O
 chmod +x "${OUTPUT_SCRIPT}"
 
 echo "Successfully generated ${OUTPUT_SCRIPT} with ${count} CIDR ranges."
+
+DOCKER_SCRIPT="${OUTPUT_DIR}/docker_crowdsec_ban_list.sh"
+
+echo "Generating ${DOCKER_SCRIPT}..."
+
+cat << EOF > "${DOCKER_SCRIPT}"
+#!/bin/bash
+# Automatically generated CrowdSec ban list script (Docker variant).
+# Generated on: $(date +"%d %B %Y")
+
+echo "Clearing previous decisions for '${DECISION_REASON}'..."
+docker exec crowdsec cscli decisions delete --reason "${DECISION_REASON}"
+
+echo "Applying new ban decisions..."
+EOF
+
+while IFS= read -r line || [ -n "$line" ]; do
+    line=$(echo "$line" | tr -d '\r' | xargs)
+
+    if [[ -n "$line" && ! "$line" =~ ^# ]]; then
+        echo "docker exec crowdsec cscli decisions add --range \"${line}\" --reason \"${DECISION_REASON}\" --type ban --duration \"${DECISION_DURATION}\"" >> "${DOCKER_SCRIPT}"
+    fi
+done < "${INPUT_FILE}"
+
+echo "echo \"Successfully applied ${count} ban decisions to CrowdSec.\"" >> "${DOCKER_SCRIPT}"
+
+chmod +x "${DOCKER_SCRIPT}"
+
+echo "Successfully generated ${DOCKER_SCRIPT} with ${count} CIDR ranges."
