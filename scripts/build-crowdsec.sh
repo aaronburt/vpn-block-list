@@ -38,7 +38,7 @@ while IFS= read -r line || [ -n "$line" ]; do
 
     if [[ -n "$line" && ! "$line" =~ ^# ]]; then
         echo "cscli decisions add --range \"${line}\" --reason \"${DECISION_REASON}\" --type ban --duration \"${DECISION_DURATION}\"" >> "${OUTPUT_SCRIPT}"
-        ((count++))
+        count=$((count + 1))
     fi
 done < "${INPUT_FILE}"
 
