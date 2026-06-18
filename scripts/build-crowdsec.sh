@@ -3,7 +3,9 @@ set -Eeuo pipefail
 
 INPUT_FILE="vpn-blocklist.txt"
 OUTPUT_DIR="crowdsec"
+DECISIONS_FILE="${OUTPUT_DIR}/decisions.csv"
 OUTPUT_SCRIPT="${OUTPUT_DIR}/crowdsec_ban_list.sh"
+DOCKER_SCRIPT="${OUTPUT_DIR}/docker_crowdsec_ban_list.sh"
 DECISION_REASON="VPN Blocklist"
 DECISION_DURATION="24h"
 
@@ -19,7 +21,19 @@ if ! grep -qi "# End" "${INPUT_FILE}"; then
     exit 1
 fi
 
-echo "Generating ${OUTPUT_SCRIPT}..."
+echo "duration,reason,type,range" > "${DECISIONS_FILE}"
+
+count=0
+while IFS= read -r line || [ -n "$line" ]; do
+    line=$(echo "$line" | tr -d '\r' | xargs)
+
+    if [[ -n "$line" && ! "$line" =~ ^# ]]; then
+        echo "${DECISION_DURATION},${DECISION_REASON},ban,${line}" >> "${DECISIONS_FILE}"
+        count=$((count + 1))
+    fi
+done < "${INPUT_FILE}"
+
+echo "Generated ${DECISIONS_FILE} with ${count} CIDR ranges."
 
 cat << EOF > "${OUTPUT_SCRIPT}"
 #!/bin/bash
@@ -29,28 +43,14 @@ cat << EOF > "${OUTPUT_SCRIPT}"
 echo "Clearing previous decisions for '${DECISION_REASON}'..."
 cscli decisions delete --reason "${DECISION_REASON}"
 
-echo "Applying new ban decisions..."
+echo "Importing ${count} ban decisions..."
+SCRIPT_DIR=\$(cd -- "\$(dirname -- "\${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+cscli decisions import -i "\${SCRIPT_DIR}/decisions.csv"
+echo "Successfully applied ${count} ban decisions to CrowdSec."
 EOF
 
-count=0
-while IFS= read -r line || [ -n "$line" ]; do
-    line=$(echo "$line" | tr -d '\r' | xargs)
-
-    if [[ -n "$line" && ! "$line" =~ ^# ]]; then
-        echo "cscli decisions add --range \"${line}\" --reason \"${DECISION_REASON}\" --type ban --duration \"${DECISION_DURATION}\"" >> "${OUTPUT_SCRIPT}"
-        count=$((count + 1))
-    fi
-done < "${INPUT_FILE}"
-
-echo "echo \"Successfully applied ${count} ban decisions to CrowdSec.\"" >> "${OUTPUT_SCRIPT}"
-
 chmod +x "${OUTPUT_SCRIPT}"
-
-echo "Successfully generated ${OUTPUT_SCRIPT} with ${count} CIDR ranges."
-
-DOCKER_SCRIPT="${OUTPUT_DIR}/docker_crowdsec_ban_list.sh"
-
-echo "Generating ${DOCKER_SCRIPT}..."
+echo "Generated ${OUTPUT_SCRIPT}."
 
 cat << EOF > "${DOCKER_SCRIPT}"
 #!/bin/bash
@@ -60,19 +60,13 @@ cat << EOF > "${DOCKER_SCRIPT}"
 echo "Clearing previous decisions for '${DECISION_REASON}'..."
 docker exec crowdsec cscli decisions delete --reason "${DECISION_REASON}"
 
-echo "Applying new ban decisions..."
+echo "Importing ${count} ban decisions..."
+SCRIPT_DIR=\$(cd -- "\$(dirname -- "\${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+docker cp "\${SCRIPT_DIR}/decisions.csv" crowdsec:/tmp/decisions.csv
+docker exec crowdsec cscli decisions import -i /tmp/decisions.csv
+docker exec crowdsec rm /tmp/decisions.csv
+echo "Successfully applied ${count} ban decisions to CrowdSec."
 EOF
 
-while IFS= read -r line || [ -n "$line" ]; do
-    line=$(echo "$line" | tr -d '\r' | xargs)
-
-    if [[ -n "$line" && ! "$line" =~ ^# ]]; then
-        echo "docker exec crowdsec cscli decisions add --range \"${line}\" --reason \"${DECISION_REASON}\" --type ban --duration \"${DECISION_DURATION}\"" >> "${DOCKER_SCRIPT}"
-    fi
-done < "${INPUT_FILE}"
-
-echo "echo \"Successfully applied ${count} ban decisions to CrowdSec.\"" >> "${DOCKER_SCRIPT}"
-
 chmod +x "${DOCKER_SCRIPT}"
-
-echo "Successfully generated ${DOCKER_SCRIPT} with ${count} CIDR ranges."
+echo "Generated ${DOCKER_SCRIPT}."
