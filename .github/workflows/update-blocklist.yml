@@ -44,3 +44,8 @@ jobs:
           git add vpn-blocklist.txt individual_blocklists/ crowdsec/
           git commit -m "chore: auto-update VPN blocklist and ASN caches"
           git push
+
+      - name: Purge jsDelivr Cache
+        if: steps.git-diff.outputs.changes == 'true'
+        run: |
+          curl -s https://purge.jsdelivr.net/gh/aaronburt/vpn-block-list@main/vpn-blocklist.txt

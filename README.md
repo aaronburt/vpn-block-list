@@ -7,7 +7,7 @@ A dynamically generated Traefik IP blocklist containing Autonomous System Number
 The blocklist is updated daily via GitHub Actions. It pulls fresh ASN prefixes and formats them for use with Traefik's `IPAllowList` or `IPWhiteList` middleware file providers.
 
 You can point your Traefik configuration directly to the raw files hosted in this repository:
-- **Combined List**: `/vpn-blocklist.txt`
+- **Combined List**: `https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/vpn-blocklist.txt`
 - **Individual Provider Lists**: Found in the `/individual_blocklists` directory.
 
 ## Managing ASNs (Once Forked)
