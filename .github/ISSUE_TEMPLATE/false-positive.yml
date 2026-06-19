@@ -1,0 +1,36 @@
+name: "\U0001F6A8 False Positive / Incorrect Block"
+description: Report an ASN or IP that should not be blocked (e.g., residential ISP, legitimate traffic source)
+labels: ["false-positive"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please use this template to report an Autonomous System Number (ASN) that is currently included in our blocklist but should be removed because it blocks legitimate users.
+  - type: input
+    id: asn
+    attributes:
+      label: ASN or IP Address
+      description: The ASN (e.g., AS12345) or IP address experiencing the block.
+    validations:
+      required: true
+  - type: input
+    id: provider
+    attributes:
+      label: Provider Name
+      description: Which provider does this ASN belong to?
+    validations:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: Why is this a false positive?
+      description: Please provide context on why this ASN should be unblocked (e.g., it is primarily used for residential broadband, not VPNs/Data Centers).
+    validations:
+      required: true
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: Verification
+      options:
+        - label: I have verified this ASN is currently in the `vpn-blocklist.txt` file.
+          required: true

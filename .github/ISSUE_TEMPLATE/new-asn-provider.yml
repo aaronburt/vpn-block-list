@@ -1,0 +1,27 @@
+name: "\U0001F4E1 Request New ASN Provider"
+description: Suggest a new VPN, proxy, or data center ASN to add to the blocklist
+labels: ["enhancement", "asn-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Know a VPN provider or data center that isn't on our list? Let us know here, or feel free to open a Pull Request modifying `asn.json` directly!
+  - type: input
+    id: asn
+    attributes:
+      label: ASN Number
+      description: The AS Number to add (e.g., 12345)
+    validations:
+      required: true
+  - type: input
+    id: name
+    attributes:
+      label: Provider Name
+      description: Name of the VPN, proxy, or data center service.
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description/Context
+      description: (Optional) Any additional details or proof that this ASN is used for VPN/proxy traffic.
