@@ -112,6 +112,7 @@ sync_vpn_blocklist() {
             echo "24h,ban,VPN Blocklist,range,$r"
         done
     } | docker exec -i crowdsec cscli decisions import --input - --format csv; then
+        echo ""
         echo "Successfully synchronized ${#validated_ranges[@]} decision records."
     else
         echo "Error: Failed to import decisions into CrowdSec."
