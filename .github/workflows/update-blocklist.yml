@@ -49,3 +49,7 @@ jobs:
         if: steps.git-diff.outputs.changes == 'true'
         run: |
           curl -s https://purge.jsdelivr.net/gh/aaronburt/vpn-block-list@main/vpn-blocklist.txt
+          for file in individual_blocklists/*.txt; do
+            filename=$(basename "$file")
+            curl -s "https://purge.jsdelivr.net/gh/aaronburt/vpn-block-list@main/individual_blocklists/$filename"
+          done
