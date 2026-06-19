@@ -110,6 +110,7 @@ sync_vpn_blocklist() {
         docker exec -i crowdsec cscli decisions import \
             --input - \
             --format values \
+            --scope range \
             --reason "VPN Blocklist" \
             --type ban \
             --duration "24h"; then
