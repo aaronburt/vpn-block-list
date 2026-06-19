@@ -106,14 +106,12 @@ sync_vpn_blocklist() {
     fi
 
     echo "Importing ${#validated_ranges[@]} verified network ranges..."
-    if printf '%s\n' "${validated_ranges[@]}" | \
-        docker exec -i crowdsec cscli decisions import \
-            --input - \
-            --format values \
-            --scope range \
-            --reason "VPN Blocklist" \
-            --type ban \
-            --duration "24h"; then
+    if {
+        echo "duration,type,reason,scope,value"
+        for r in "${validated_ranges[@]}"; do
+            echo "24h,ban,VPN Blocklist,range,$r"
+        done
+    } | docker exec -i crowdsec cscli decisions import --input - --format csv; then
         echo "Successfully synchronized ${#validated_ranges[@]} decision records."
     else
         echo "Error: Failed to import decisions into CrowdSec."
