@@ -88,5 +88,75 @@
     "asn": 62651,
     "name": "Strong Technology LLC (NetProtect)",
     "description": "Secondary network allocation by IPVanish parent for DDoS-protected VPN server hosting."
+  },
+  {
+    "asn": 14061,
+    "name": "DigitalOcean, LLC",
+    "description": "Massive global cloud provider; extremely common source of self-hosted VPNs, proxies, and shadow proxies."
+  },
+  {
+    "asn": 63949,
+    "name": "Linode / Akamai Connected Cloud",
+    "description": "Major VPS provider favored by private and commercial VPN infrastructure."
+  },
+  {
+    "asn": 20473,
+    "name": "Choopa, LLC / Vultr",
+    "description": "Global infrastructure provider heavily leased by top-tier VPN brands and proxy resellers."
+  },
+  {
+    "asn": 24940,
+    "name": "Hetzner Online GmbH",
+    "description": "One of the largest European data center operators, carrying immense amounts of proxy and VPN traffic."
+  },
+  {
+    "asn": 16276,
+    "name": "OVH SAS",
+    "description": "Global hosting giant; one of the most common sources of commercial and budget proxy infrastructure."
+  },
+  {
+    "asn": 36352,
+    "name": "ColoCrossing",
+    "description": "Major budget hosting provider heavily favored by proxy resellers, scrapers, and anonymization networks."
+  },
+  {
+    "asn": 46261,
+    "name": "Performive (Total Server Solutions)",
+    "description": "Infrastructure frequently leased by top-tier consumer VPN brands for North American routing."
+  },
+  {
+    "asn": 8100,
+    "name": "QuadraNet Enterprises LLC",
+    "description": "Common VPN and proxy infrastructure provider in North America."
+  },
+  {
+    "asn": 11878,
+    "name": "Tzulo, Inc.",
+    "description": "US-based network with very high concentrations of scraping proxies and anonymized traffic."
+  },
+  {
+    "asn": 40676,
+    "name": "Psychz Networks",
+    "description": "Dedicated server provider often utilized for high-bandwidth proxy node hosting."
+  },
+  {
+    "asn": 47583,
+    "name": "Hostinger International",
+    "description": "Popular budget VPS host frequently used for self-hosted VPN endpoints."
+  },
+  {
+    "asn": 51167,
+    "name": "Contabo GmbH",
+    "description": "Budget VPS provider with massive global adoption for private VPNs and proxy relays."
+  },
+  {
+    "asn": 197019,
+    "name": "G-Core Labs S.A.",
+    "description": "Global CDN and hosting provider frequently acting as a proxy and VPN transit layer."
+  },
+  {
+    "asn": 21859,
+    "name": "Zenlayer Inc",
+    "description": "Major transit and hosting provider for VPNs focused on circumventing Asian internet restrictions."
   }
 ]
