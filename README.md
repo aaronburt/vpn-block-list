@@ -16,3 +16,13 @@ To add or remove monitored providers:
 1. Edit `asn.json`
 2. Add the provider's `asn` (number), `name`, and optional `description`.
 3. Commit and push. The GitHub Action will automatically rebuild the lists.
+
+## CrowdSec Integration
+
+If you use CrowdSec, you can quickly import the combined blocklist into your local decision database using the provided import script. Run this on your Docker host:
+
+```bash
+curl -sSL "https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/crowdsec/docker_crowdsec_ban_import.sh" | bash
+```
+
+*Note: The script assumes your CrowdSec container is named `crowdsec`.*
