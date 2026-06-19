@@ -88,7 +88,7 @@ sync_vpn_blocklist() {
         [[ -z "${raw_line//[[:space:]]/}" ]] && continue
 
         local clean_line
-        clean_line=$(echo "$raw_line" | sed 's/#.*//;s/^[[:space:]]*//;s/[[:space:]]*$//')
+        clean_line=$(echo "$raw_line" | tr -d '\r' | sed 's/#.*//;s/^[[:space:]]*//;s/[[:space:]]*$//')
         [[ -z "$clean_line" ]] && continue
 
         if is_valid_cidr "$clean_line"; then
