@@ -26,3 +26,11 @@ curl -sSL "https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/crowdsec/do
 ```
 
 *Note: The script assumes your CrowdSec container is named `crowdsec`.*
+
+### Automation (Cron)
+
+To keep your CrowdSec blocklist automatically synchronized, you can add a daily cronjob. Open your root crontab (`sudo crontab -e`) and add the following entry to run the sync at 3:00 AM every day:
+
+```bash
+0 3 * * * curl -sSL "https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/crowdsec/docker_crowdsec_ban_import.sh" | bash > /dev/null 2>&1
+```
