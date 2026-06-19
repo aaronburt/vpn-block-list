@@ -32,7 +32,7 @@ curl -sSL "https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/crowdsec/do
 To keep your CrowdSec blocklist automatically synchronized, you can add a daily cronjob. Open your root crontab (`sudo crontab -e`) and add the following entry to run the sync at 3:00 AM every day:
 
 ```bash
-0 3 * * * curl -sSL "https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/crowdsec/docker_crowdsec_ban_import.sh" -o /tmp/cs_import.sh && echo "acba6d7e8fae9f1cd26084b705f63ed74b0038aa526e4caf9c617411ebf3d655  /tmp/cs_import.sh" | sha256sum -c - >/dev/null 2>&1 && bash /tmp/cs_import.sh >/dev/null 2>&1; rm -f /tmp/cs_import.sh
+0 3 * * * curl -sSL "https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/crowdsec/docker_crowdsec_ban_import.sh" -o /tmp/cs_import.sh && echo "acba6d7e8fae9f1cd26084b705f63ed74b0038aa526e4caf9c617411ebf3d655  /tmp/cs_import.sh" | sha256sum -c - >/dev/null 2>&1 && bash /tmp/cs_import.sh >/dev/null 2>&1 && echo "$(date): SUCCESS" >> /var/log/crowdsec_vpn_sync.log || echo "$(date): FAILED" >> /var/log/crowdsec_vpn_sync.log; rm -f /tmp/cs_import.sh
 ```
 
 > [!WARNING]
