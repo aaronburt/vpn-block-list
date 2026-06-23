@@ -1,6 +1,6 @@
 # Misaka Network, Inc. VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-06-22T00:23:07Z
+# Last updated: 2026-06-23T00:22:19Z
 
 # AS917
 # High-performance specialized infrastructure favored by privacy services targeting optimized routing across Asian and European internet exchanges.
