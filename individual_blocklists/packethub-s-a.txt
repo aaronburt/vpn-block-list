@@ -1,6 +1,6 @@
 # PacketHub S.A. VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-06-24T00:17:39Z
+# Last updated: 2026-06-25T00:22:09Z
 
 # AS141039
 # Panama-registered network used by NordVPN for dedicated bare-metal server operations.
