@@ -1,6 +1,6 @@
 # Cyberzone S.A. VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-06-28T00:19:16Z
+# Last updated: 2026-06-29T00:20:56Z
 
 # AS209854
 # Panama-registered network operated by Surfshark for dedicated VPN server infrastructure.
