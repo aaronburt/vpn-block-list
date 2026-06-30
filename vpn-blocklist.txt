@@ -1,6 +1,6 @@
 # Known VPN Provider Endpoints & Commercial Data Center ASN Blocks
 # Auto-generated — do not edit manually
-# Last updated: 2026-06-29T00:20:51Z
+# Last updated: 2026-06-30T00:21:07Z
 
 # M247 Europe SRL / M247 Ltd - AS9009
 # The largest wholesale infrastructure provider for commercial VPNs; heavily utilized by NordVPN, ExpressVPN, and Surfshark.
