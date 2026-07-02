@@ -1,6 +1,6 @@
 # IPVanish Inc. VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-07-01T00:22:39Z
+# Last updated: 2026-07-02T00:22:14Z
 
 # AS46253
 # Wholly-owned network operated directly by IPVanish for consumer VPN services.
