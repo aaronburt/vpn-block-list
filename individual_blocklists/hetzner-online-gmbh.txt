@@ -1,6 +1,6 @@
 # Hetzner Online GmbH VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-07-02T00:22:14Z
+# Last updated: 2026-07-03T01:25:00Z
 
 # AS24940
 # One of the largest European data center operators, carrying immense amounts of proxy and VPN traffic.
