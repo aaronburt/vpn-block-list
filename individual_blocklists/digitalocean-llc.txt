@@ -1,6 +1,6 @@
 # DigitalOcean, LLC VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-07-11T01:15:02Z
+# Last updated: 2026-07-12T01:16:31Z
 
 # AS14061
 # Massive global cloud provider; extremely common source of self-hosted VPNs, proxies, and shadow proxies.
