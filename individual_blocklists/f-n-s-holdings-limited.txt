@@ -1,6 +1,6 @@
 # F.N.S. Holdings Limited VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-07-14T01:07:16Z
+# Last updated: 2026-07-15T01:04:35Z
 
 # AS206092
 # Cyprus-registered network associated with ExpressVPN secure firewall and transit infrastructure.
