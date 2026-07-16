@@ -1,6 +1,6 @@
 # Datacamp Limited (Alternative) VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-07-15T01:04:35Z
+# Last updated: 2026-07-16T01:13:46Z
 
 # AS212238
 # Secondary major routing block managed by Datacamp to expand global VPN and proxy infrastructure hosting.
