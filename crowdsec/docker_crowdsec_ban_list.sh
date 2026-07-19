@@ -1,6 +1,6 @@
 #!/bin/bash
 # Automatically generated CrowdSec ban list script (Docker variant).
-# Generated on: 18 July 2026
+# Generated on: 19 July 2026
 
 echo "Applying ban decisions..."
 docker exec crowdsec cscli decisions add --range "2.56.16.0/22" --reason "VPN Blocklist" --type ban --duration "24h"
