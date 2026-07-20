@@ -1,6 +1,6 @@
 # LeaseWeb USA, Inc. VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-07-19T01:14:54Z
+# Last updated: 2026-07-20T01:18:01Z
 
 # AS60636
 # North American routing footprint for LeaseWeb, carrying substantial commercial proxy and anonymizer traffic.
