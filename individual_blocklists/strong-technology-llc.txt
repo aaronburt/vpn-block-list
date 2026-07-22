@@ -1,6 +1,6 @@
 # Strong Technology LLC VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-07-21T01:15:05Z
+# Last updated: 2026-07-22T01:13:19Z
 
 # AS22781
 # IPVanish parent company network carrying primary VPN transit traffic across North America.

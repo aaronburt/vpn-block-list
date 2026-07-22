@@ -1,6 +1,6 @@
 # Choopa, LLC / Vultr VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-07-21T01:15:08Z
+# Last updated: 2026-07-22T01:13:20Z
 
 # AS20473
 # Global infrastructure provider heavily leased by top-tier VPN brands and proxy resellers.

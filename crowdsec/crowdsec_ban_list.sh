@@ -1,6 +1,6 @@
 #!/bin/bash
 # Automatically generated CrowdSec ban list script.
-# Generated on: 21 July 2026
+# Generated on: 22 July 2026
 
 echo "Applying ban decisions..."
 cscli decisions add --range "2.56.16.0/22" --reason "VPN Blocklist" --type ban --duration "24h"
