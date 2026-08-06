@@ -1,6 +1,6 @@
 # M247 Europe SRL / M247 Ltd VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-08-05T01:12:59Z
+# Last updated: 2026-08-06T01:10:45Z
 
 # AS9009
 # The largest wholesale infrastructure provider for commercial VPNs; heavily utilized by NordVPN, ExpressVPN, and Surfshark.
