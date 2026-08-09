@@ -1,6 +1,6 @@
 # Strong Technology LLC (NetProtect) VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-08-08T00:37:02Z
+# Last updated: 2026-08-09T00:39:15Z
 
 # AS62651
 # Secondary network allocation by IPVanish parent for DDoS-protected VPN server hosting.
