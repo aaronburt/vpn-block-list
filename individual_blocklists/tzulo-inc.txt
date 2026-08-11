@@ -1,6 +1,6 @@
 # Tzulo, Inc. VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-08-10T00:40:55Z
+# Last updated: 2026-08-11T00:40:54Z
 
 # AS11878
 # US-based network with very high concentrations of scraping proxies and anonymized traffic.
