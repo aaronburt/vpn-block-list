@@ -1,6 +1,6 @@
 # ColoCrossing VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-08-13T00:49:01Z
+# Last updated: 2026-08-14T00:48:01Z
 
 # AS36352
 # Major budget hosting provider heavily favored by proxy resellers, scrapers, and anonymization networks.
