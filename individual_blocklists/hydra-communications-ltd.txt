@@ -1,6 +1,6 @@
 # Hydra Communications Ltd VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-08-15T00:26:05Z
+# Last updated: 2026-08-16T00:26:58Z
 
 # AS24961
 # Wholesale infrastructure host frequently mapped to commercial anonymization tools and scraping proxies.
