@@ -1,6 +1,6 @@
 # Psychz Networks VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-08-17T00:26:01Z
+# Last updated: 2026-08-18T00:25:26Z
 
 # AS40676
 # Dedicated server provider often utilized for high-bandwidth proxy node hosting.
