@@ -1,6 +1,6 @@
 # Linode / Akamai Connected Cloud VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-09-02T01:31:30Z
+# Last updated: 2026-09-03T01:35:07Z
 
 # AS63949
 # Major VPS provider favored by private and commercial VPN infrastructure.
