@@ -1,6 +1,6 @@
 # Contabo GmbH VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-09-03T01:35:08Z
+# Last updated: 2026-09-04T01:28:47Z
 
 # AS51167
 # Budget VPS provider with massive global adoption for private VPNs and proxy relays.
