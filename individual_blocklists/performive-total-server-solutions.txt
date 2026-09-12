@@ -1,6 +1,6 @@
 # Performive (Total Server Solutions) VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-09-11T01:33:50Z
+# Last updated: 2026-09-12T01:40:21Z
 
 # AS46261
 # Infrastructure frequently leased by top-tier consumer VPN brands for North American routing.

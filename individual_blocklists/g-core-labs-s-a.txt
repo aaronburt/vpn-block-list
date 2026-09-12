@@ -1,6 +1,6 @@
 # G-Core Labs S.A. VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-09-11T01:33:50Z
+# Last updated: 2026-09-12T01:40:22Z
 
 # AS197019
 # Global CDN and hosting provider frequently acting as a proxy and VPN transit layer.
