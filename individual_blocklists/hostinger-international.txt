@@ -1,6 +1,6 @@
 # Hostinger International VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-09-19T01:45:02Z
+# Last updated: 2026-09-20T01:46:53Z
 
 # AS47583
 # Popular budget VPS host frequently used for self-hosted VPN endpoints.
