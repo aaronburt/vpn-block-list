@@ -1,6 +1,6 @@
 # Mullvad VPN AB VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-09-24T01:43:57Z
+# Last updated: 2026-09-25T02:00:46Z
 
 # AS216025
 # Dedicated corporate network owned and managed directly by Mullvad for their custom, bare-metal server operations.
