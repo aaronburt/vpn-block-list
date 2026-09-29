@@ -1,6 +1,6 @@
 # GSL Networks Pty LTD VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-09-28T02:03:53Z
+# Last updated: 2026-09-29T02:50:13Z
 
 # AS137409
 # Australia-based hosting provider heavily utilized by ExpressVPN for global server infrastructure.
