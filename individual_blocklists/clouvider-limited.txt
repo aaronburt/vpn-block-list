@@ -1,6 +1,6 @@
 # Clouvider Limited VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-10-02T02:39:29Z
+# Last updated: 2026-10-03T02:26:12Z
 
 # AS62240
 # Premium hosting infrastructure in the UK, US, and EU containing netblocks dedicated exclusively to consumer VPN brands.
