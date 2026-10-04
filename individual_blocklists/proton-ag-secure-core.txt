@@ -1,6 +1,6 @@
 # Proton AG (Secure Core) VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-10-03T02:26:15Z
+# Last updated: 2026-10-04T02:55:46Z
 
 # AS209103
 # Secondary network allocation used by Proton to route localized, high-security multi-hop privacy architectures.
