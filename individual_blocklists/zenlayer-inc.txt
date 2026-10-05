@@ -1,6 +1,6 @@
 # Zenlayer Inc VPN Blocklist
 # Auto-generated — do not edit manually
-# Last updated: 2026-10-04T02:56:04Z
+# Last updated: 2026-10-05T02:29:26Z
 
 # AS21859
 # Major transit and hosting provider for VPNs focused on circumventing Asian internet restrictions.
