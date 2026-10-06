@@ -10,13 +10,8 @@ DECISION_DURATION="24h"
 
 mkdir -p "$OUTPUT_DIR"
 
-if [ ! -f "$INPUT_FILE" ]; then
-  echo "Error: ${INPUT_FILE} not found." >&2
-  exit 1
-fi
-
-if ! grep -qi "# End" "${INPUT_FILE}"; then
-  echo "Error: ${INPUT_FILE} is missing the '# End' validation line." >&2
+if [ ! -s "$INPUT_FILE" ]; then
+  echo "Error: ${INPUT_FILE} not found or empty." >&2
   exit 1
 fi
 

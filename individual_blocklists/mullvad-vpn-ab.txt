@@ -1,9 +1,2 @@
-# Mullvad VPN AB VPN Blocklist
-# Auto-generated — do not edit manually
-
-# AS216025
-# Dedicated corporate network owned and managed directly by Mullvad for their custom, bare-metal server operations.
-45.92.0.0/24
 2a10:7402::/32
-
-# End
+45.92.0.0/24
