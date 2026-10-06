@@ -5,6 +5,8 @@ ASN_JSON="asn.json"
 ASN_LIST_DIR="asn_list"
 INDIVIDUAL_DIR="individual_blocklists"
 OUTPUT_FILE="vpn-blocklist.txt"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PYTHON_BIN="$(command -v python3 || command -v python)"
 
 mkdir -p "$ASN_LIST_DIR"
 rm -rf "$INDIVIDUAL_DIR"
@@ -23,8 +25,6 @@ done
 curl --parallel --parallel-immediate --parallel-max 16 --silent --fail --location --retry 3 --connect-timeout 5 --max-time 15 --config "$curl_config" || true
 rm -f "$curl_config"
 
-raw_combined=$(mktemp)
-
 for row in "${asn_rows[@]}"; do
   IFS=$'\t' read -r asn name desc <<< "$row"
   target_file="$ASN_LIST_DIR/${asn}.json"
@@ -41,16 +41,10 @@ for row in "${asn_rows[@]}"; do
 
   if [ -n "$prefixes" ]; then
     echo "$prefixes" >> "$indiv_file"
-    echo "$prefixes" >> "$raw_combined"
+    echo "$prefixes" >> "$OUTPUT_FILE"
   fi
 done
 
-for f in "$INDIVIDUAL_DIR"/*.txt; do
-  [ -f "$f" ] || continue
-  sort -u "$f" -o "$f"
-done
-
-sort -u "$raw_combined" > "$OUTPUT_FILE"
-rm -f "$raw_combined"
+"$PYTHON_BIN" "${SCRIPT_DIR}/scan-overlaps.py" --merge "$INDIVIDUAL_DIR"/*.txt "$OUTPUT_FILE"
 
 echo "Blocklist successfully built into $OUTPUT_FILE"
