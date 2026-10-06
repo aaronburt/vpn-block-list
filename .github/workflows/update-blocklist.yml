@@ -31,17 +31,19 @@ jobs:
           chmod +x scripts/build-crowdsec.sh
           ./scripts/build-crowdsec.sh
 
+      - name: Stage Output Files
+        run: git add -A vpn-blocklist.txt individual_blocklists/ crowdsec/
+
       - name: Check for Changes
         id: git-diff
         run: |
-          git diff --quiet || echo "changes=true" >> $GITHUB_OUTPUT
+          git diff --cached --quiet -- vpn-blocklist.txt individual_blocklists/ crowdsec/ || echo "changes=true" >> $GITHUB_OUTPUT
 
       - name: Commit and Push Changes
         if: steps.git-diff.outputs.changes == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A vpn-blocklist.txt individual_blocklists/ crowdsec/
           git commit -m "chore: auto-update VPN blocklist and ASN caches"
           git push
 
