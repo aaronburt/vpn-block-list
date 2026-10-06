@@ -19,7 +19,10 @@ To add or remove monitored providers:
 
 ## CrowdSec Integration
 
-If you use CrowdSec, you can quickly import the combined blocklist into your local decision database using the provided import script. Run this on your Docker host:
+If you use CrowdSec, you can import the pre-formatted decisions CSV directly or run the provided import runner:
+
+- **Direct CSV Import**: Download [`crowdsec/decisions.csv`](https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/crowdsec/decisions.csv) and run `docker exec -i crowdsec cscli decisions import --input - --format csv < decisions.csv`
+- **Import Runner**: Run on your Docker host:
 
 ```bash
 curl -sSL "https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/crowdsec/docker_crowdsec_ban_import.sh" | bash

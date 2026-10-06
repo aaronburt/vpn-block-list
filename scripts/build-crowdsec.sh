@@ -3,55 +3,52 @@ set -Eeuo pipefail
 
 INPUT_FILE="vpn-blocklist.txt"
 OUTPUT_DIR="crowdsec"
-OUTPUT_SCRIPT="${OUTPUT_DIR}/crowdsec_ban_list.sh"
-DOCKER_SCRIPT="${OUTPUT_DIR}/docker_crowdsec_ban_list.sh"
+CSV_FILE="${OUTPUT_DIR}/decisions.csv"
+IMPORT_SCRIPT="${OUTPUT_DIR}/docker_crowdsec_ban_import.sh"
 DECISION_REASON="VPN Blocklist"
 DECISION_DURATION="24h"
 
 mkdir -p "$OUTPUT_DIR"
 
 if [ ! -f "$INPUT_FILE" ]; then
-    echo "Error: ${INPUT_FILE} not found." >&2
-    exit 1
+  echo "Error: ${INPUT_FILE} not found." >&2
+  exit 1
 fi
 
 if ! grep -qi "# End" "${INPUT_FILE}"; then
-    echo "Error: ${INPUT_FILE} is missing the '# End' validation line." >&2
-    exit 1
+  echo "Error: ${INPUT_FILE} is missing the '# End' validation line." >&2
+  exit 1
 fi
 
-cat << EOF > "${OUTPUT_SCRIPT}"
-#!/bin/bash
-# Automatically generated CrowdSec ban list script.
-# Generated on: $(date +"%d %B %Y")
+printf "duration,type,reason,scope,value\n" > "$CSV_FILE"
 
-echo "Applying ban decisions..."
+awk -v reason="$DECISION_REASON" -v dur="$DECISION_DURATION" '
+  !/^[[:space:]]*(#|$)/ {
+    sub(/\r$/, "")
+    gsub(/^[[:space:]]+|[[:space:]]+$/, "")
+    if ($0 != "") {
+      print dur ",ban," reason ",range," $0
+    }
+  }
+' "$INPUT_FILE" >> "$CSV_FILE"
+
+cat << 'EOF' > "$IMPORT_SCRIPT"
+#!/usr/bin/env bash
+set -euo pipefail
+
+CONTAINER_NAME="${CROWDSEC_CONTAINER:-crowdsec}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LOCAL_CSV="${SCRIPT_DIR}/decisions.csv"
+REMOTE_URL="https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/crowdsec/decisions.csv"
+
+if [ -f "$LOCAL_CSV" ]; then
+  docker exec -i "$CONTAINER_NAME" cscli decisions import --input - --format csv < "$LOCAL_CSV"
+else
+  curl -sSL "$REMOTE_URL" | docker exec -i "$CONTAINER_NAME" cscli decisions import --input - --format csv
+fi
 EOF
 
-cat << EOF > "${DOCKER_SCRIPT}"
-#!/bin/bash
-# Automatically generated CrowdSec ban list script (Docker variant).
-# Generated on: $(date +"%d %B %Y")
+chmod +x "$IMPORT_SCRIPT"
+rm -f "${OUTPUT_DIR}/crowdsec_ban_list.sh" "${OUTPUT_DIR}/docker_crowdsec_ban_list.sh"
 
-echo "Applying ban decisions..."
-EOF
-
-count=0
-while IFS= read -r line || [ -n "$line" ]; do
-    line=$(echo "$line" | tr -d '\r' | xargs)
-
-    if [[ -n "$line" && ! "$line" =~ ^# ]]; then
-        echo "cscli decisions add --range \"${line}\" --reason \"${DECISION_REASON}\" --type ban --duration \"${DECISION_DURATION}\"" >> "${OUTPUT_SCRIPT}"
-        echo "docker exec crowdsec cscli decisions add --range \"${line}\" --reason \"${DECISION_REASON}\" --type ban --duration \"${DECISION_DURATION}\"" >> "${DOCKER_SCRIPT}"
-        count=$((count + 1))
-    fi
-done < "${INPUT_FILE}"
-
-echo "echo \"Successfully applied ${count} ban decisions to CrowdSec.\"" >> "${OUTPUT_SCRIPT}"
-echo "echo \"Successfully applied ${count} ban decisions to CrowdSec.\"" >> "${DOCKER_SCRIPT}"
-
-chmod +x "${OUTPUT_SCRIPT}"
-chmod +x "${DOCKER_SCRIPT}"
-
-echo "Generated ${OUTPUT_SCRIPT} with ${count} CIDR ranges."
-echo "Generated ${DOCKER_SCRIPT} with ${count} CIDR ranges."
+echo "CrowdSec decisions generated into $CSV_FILE and $IMPORT_SCRIPT"

@@ -41,7 +41,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add vpn-blocklist.txt individual_blocklists/ crowdsec/
+          git add -A vpn-blocklist.txt individual_blocklists/ crowdsec/
           git commit -m "chore: auto-update VPN blocklist and ASN caches"
           git push
 
@@ -49,6 +49,8 @@ jobs:
         if: steps.git-diff.outputs.changes == 'true'
         run: |
           curl -s https://purge.jsdelivr.net/gh/aaronburt/vpn-block-list@main/vpn-blocklist.txt
+          curl -s https://purge.jsdelivr.net/gh/aaronburt/vpn-block-list@main/crowdsec/decisions.csv
+          curl -s https://purge.jsdelivr.net/gh/aaronburt/vpn-block-list@main/crowdsec/docker_crowdsec_ban_import.sh
           for file in individual_blocklists/*.txt; do
             filename=$(basename "$file")
             curl -s "https://purge.jsdelivr.net/gh/aaronburt/vpn-block-list@main/individual_blocklists/$filename"
