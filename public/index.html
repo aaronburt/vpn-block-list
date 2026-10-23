@@ -27,7 +27,7 @@
   .row { display: flex; flex-wrap: wrap; gap: 16px; }
   .field { display: flex; flex-direction: column; gap: 4px; min-width: 160px; }
   .field span { font-size: 0.85rem; color: var(--muted); }
-  input[type=text], input[type=time] { font: inherit; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); }
+  input[type=text], input[type=time], select { font: inherit; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); }
   pre { background: var(--code-bg); border-radius: 8px; padding: 12px; margin: 0; overflow-x: auto; white-space: pre-wrap; word-break: break-all; font: 13px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; }
   .out { margin-bottom: 14px; }
   .out-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
@@ -56,6 +56,9 @@
     <div class="row">
       <div class="field"><span>CrowdSec container name</span><input id="container" type="text" value="crowdsec" spellcheck="false"></div>
       <div class="field"><span>Daily sync time (cron)</span><input id="time" type="time" value="03:00"></div>
+      <div class="field"><span>Address family</span>
+        <select id="family"><option value="">IPv4 and IPv6</option><option value="ipv4">IPv4 only</option><option value="ipv6">IPv6 only</option></select>
+      </div>
     </div>
     <label><input id="pin" type="checkbox" checked>
       <span>Pin the import script to the current commit<small>The checksum always matches, and later script changes never break your cron job. The block list data itself still updates daily.</small></span>
@@ -95,6 +98,8 @@ function block(title, text) {
 function render() {
   const cats = selectedCategories();
   const container = el('container').value.trim();
+  const family = el('family').value;
+  const withFamily = (path) => family ? path.replace(/\.txt$/, `-${family}.txt`) : path;
   const [hour, minute] = (el('time').value || '03:00').split(':').map(Number);
   const errors = [];
   if (!cats.length) errors.push('Select at least one category.');
@@ -112,6 +117,7 @@ function render() {
   const allSelected = cats.length === manifest.categories.length;
   const env = [];
   if (!allSelected) env.push(`CATEGORIES="${cats.join(' ')}"`);
+  if (family) env.push(`FAMILY="${family}"`);
   if (container !== 'crowdsec') env.push(`CROWDSEC_CONTAINER="${container}"`);
   const run = `${env.length ? env.join(' ') + ' ' : ''}bash /tmp/cs_import.sh`;
   const fetchVerify = `curl -fsSL "${scriptUrl}" -o /tmp/cs_import.sh && echo "${sha}  /tmp/cs_import.sh" | sha256sum -c -`;
@@ -120,8 +126,8 @@ function render() {
   const cron = `${minute} ${hour} * * * ${fetchVerify} >/dev/null 2>&1 && ${run} >/dev/null 2>&1 && echo "$(date): SUCCESS" >> ~/cs_import.log || echo "$(date): FAILED" >> ~/cs_import.log; rm -f /tmp/cs_import.sh`;
 
   const listUrls = allSelected
-    ? `${CDN}${repo}@main/${manifest.combined.path}`
-    : manifest.categories.filter((c) => cats.includes(c.name)).map((c) => `${CDN}${repo}@main/${c.path}`).join('\n');
+    ? `${CDN}${repo}@main/${withFamily(manifest.combined.path)}`
+    : manifest.categories.filter((c) => cats.includes(c.name)).map((c) => `${CDN}${repo}@main/${withFamily(c.path)}`).join('\n');
 
   el('outputs').innerHTML =
     block('CrowdSec: import once', once) +
