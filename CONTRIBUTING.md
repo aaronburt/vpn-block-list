@@ -11,15 +11,17 @@ The primary way to contribute to this project is by adding new VPN/Proxy/Data Ce
 1. Fork the repository and clone it locally.
 2. Open the `asn.json` file.
 3. Add a new entry to the JSON array (or modify an existing one).
-   - `asn`: The AS Number (string).
+   - `asn`: The AS Number (number).
    - `name`: A short, descriptive name for the provider.
+   - `category`: `vpn` (operated by a VPN provider), `vpn-infrastructure` (hosting heavily leased by VPN/proxy brands), or `hosting` (general-purpose cloud/VPS).
    - `description`: (Optional) Additional context about the provider.
    
    Example:
    ```json
    {
-     "asn": "12345",
+     "asn": 12345,
      "name": "Example VPN",
+     "category": "vpn",
      "description": "Commercial VPN Provider"
    }
    ```
