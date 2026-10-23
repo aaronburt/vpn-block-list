@@ -7,6 +7,8 @@ A dynamically generated IP blocklist of the networks (ASNs) behind common consum
 
 ## Usage
 
+**Command builder:** [aaronburt.github.io/vpn-block-list](https://aaronburt.github.io/vpn-block-list/) lets you pick categories and generates a ready-to-paste CrowdSec command or cron entry with checksum verification, plus the matching list URLs.
+
 The blocklist is rebuilt daily via GitHub Actions from public ASN prefix data. Each file is plain text with one IPv4 or IPv6 CIDR per line:
 
 - **Combined List**: [https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/vpn-blocklist.txt](https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/vpn-blocklist.txt)
