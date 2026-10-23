@@ -2,161 +2,193 @@
   {
     "asn": 9009,
     "name": "M247 Europe SRL / M247 Ltd",
+    "category": "vpn-infrastructure",
     "description": "The largest wholesale infrastructure provider for commercial VPNs; heavily utilized by NordVPN, ExpressVPN, and Surfshark."
   },
   {
     "asn": 60068,
     "name": "Datacamp Limited (CDN77)",
+    "category": "vpn-infrastructure",
     "description": "High-bandwidth global transit network frequently leased by premium privacy services including Mullvad, Proton VPN, and Nord."
   },
   {
     "asn": 212238,
     "name": "Datacamp Limited (Alternative)",
+    "category": "vpn-infrastructure",
     "description": "Secondary major routing block managed by Datacamp to expand global VPN and proxy infrastructure hosting."
   },
   {
     "asn": 62240,
     "name": "Clouvider Limited",
+    "category": "vpn-infrastructure",
     "description": "Premium hosting infrastructure in the UK, US, and EU containing netblocks dedicated exclusively to consumer VPN brands."
   },
   {
     "asn": 917,
     "name": "Misaka Network, Inc.",
+    "category": "vpn-infrastructure",
     "description": "High-performance specialized infrastructure favored by privacy services targeting optimized routing across Asian and European internet exchanges."
   },
   {
     "asn": 60636,
     "name": "LeaseWeb USA, Inc.",
+    "category": "vpn-infrastructure",
     "description": "North American routing footprint for LeaseWeb, carrying substantial commercial proxy and anonymizer traffic."
   },
   {
     "asn": 24961,
     "name": "Hydra Communications Ltd",
+    "category": "vpn-infrastructure",
     "description": "Wholesale infrastructure host frequently mapped to commercial anonymization tools and scraping proxies."
   },
   {
     "asn": 216025,
     "name": "Mullvad VPN AB",
+    "category": "vpn",
     "description": "Dedicated corporate network owned and managed directly by Mullvad for their custom, bare-metal server operations."
   },
   {
     "asn": 62371,
     "name": "Proton AG",
+    "category": "vpn",
     "description": "Wholly-owned core network routing infrastructure managed directly by Proton for secure VPN and email transit."
   },
   {
     "asn": 209103,
     "name": "Proton AG (Secure Core)",
+    "category": "vpn",
     "description": "Secondary network allocation used by Proton to route localized, high-security multi-hop privacy architectures."
   },
   {
     "asn": 209854,
     "name": "Cyberzone S.A.",
+    "category": "vpn",
     "description": "Panama-registered network operated by Surfshark for dedicated VPN server infrastructure."
   },
   {
     "asn": 137409,
     "name": "GSL Networks Pty LTD",
+    "category": "vpn-infrastructure",
     "description": "Australia-based hosting provider heavily utilized by ExpressVPN for global server infrastructure."
   },
   {
     "asn": 206092,
     "name": "F.N.S. Holdings Limited",
+    "category": "vpn",
     "description": "Cyprus-registered network associated with ExpressVPN secure firewall and transit infrastructure."
   },
   {
     "asn": 141039,
     "name": "PacketHub S.A.",
+    "category": "vpn",
     "description": "Panama-registered network used by NordVPN for dedicated bare-metal server operations."
   },
   {
     "asn": 13213,
     "name": "UK-2 Limited",
+    "category": "vpn-infrastructure",
     "description": "UK-based hosting provider serving as a major infrastructure partner for ExpressVPN endpoints."
   },
   {
     "asn": 46253,
     "name": "IPVanish Inc.",
+    "category": "vpn",
     "description": "Wholly-owned network operated directly by IPVanish for consumer VPN services."
   },
   {
     "asn": 22781,
     "name": "Strong Technology LLC",
+    "category": "vpn",
     "description": "IPVanish parent company network carrying primary VPN transit traffic across North America."
   },
   {
     "asn": 62651,
     "name": "Strong Technology LLC (NetProtect)",
+    "category": "vpn",
     "description": "Secondary network allocation by IPVanish parent for DDoS-protected VPN server hosting."
   },
   {
     "asn": 14061,
     "name": "DigitalOcean, LLC",
+    "category": "hosting",
     "description": "Massive global cloud provider; extremely common source of self-hosted VPNs, proxies, and shadow proxies."
   },
   {
     "asn": 63949,
     "name": "Linode / Akamai Connected Cloud",
+    "category": "hosting",
     "description": "Major VPS provider favored by private and commercial VPN infrastructure."
   },
   {
     "asn": 20473,
     "name": "Choopa, LLC / Vultr",
+    "category": "hosting",
     "description": "Global infrastructure provider heavily leased by top-tier VPN brands and proxy resellers."
   },
   {
     "asn": 24940,
     "name": "Hetzner Online GmbH",
+    "category": "hosting",
     "description": "One of the largest European data center operators, carrying immense amounts of proxy and VPN traffic."
   },
   {
     "asn": 16276,
     "name": "OVH SAS",
+    "category": "hosting",
     "description": "Global hosting giant; one of the most common sources of commercial and budget proxy infrastructure."
   },
   {
     "asn": 36352,
     "name": "ColoCrossing",
+    "category": "hosting",
     "description": "Major budget hosting provider heavily favored by proxy resellers, scrapers, and anonymization networks."
   },
   {
     "asn": 46261,
     "name": "Performive (Total Server Solutions)",
+    "category": "vpn-infrastructure",
     "description": "Infrastructure frequently leased by top-tier consumer VPN brands for North American routing."
   },
   {
     "asn": 8100,
     "name": "QuadraNet Enterprises LLC",
+    "category": "vpn-infrastructure",
     "description": "Common VPN and proxy infrastructure provider in North America."
   },
   {
     "asn": 11878,
     "name": "Tzulo, Inc.",
+    "category": "vpn-infrastructure",
     "description": "US-based network with very high concentrations of scraping proxies and anonymized traffic."
   },
   {
     "asn": 40676,
     "name": "Psychz Networks",
+    "category": "hosting",
     "description": "Dedicated server provider often utilized for high-bandwidth proxy node hosting."
   },
   {
     "asn": 47583,
     "name": "Hostinger International",
+    "category": "hosting",
     "description": "Popular budget VPS host frequently used for self-hosted VPN endpoints."
   },
   {
     "asn": 51167,
     "name": "Contabo GmbH",
+    "category": "hosting",
     "description": "Budget VPS provider with massive global adoption for private VPNs and proxy relays."
   },
   {
     "asn": 197019,
     "name": "G-Core Labs S.A.",
+    "category": "hosting",
     "description": "Global CDN and hosting provider frequently acting as a proxy and VPN transit layer."
   },
   {
     "asn": 21859,
     "name": "Zenlayer Inc",
+    "category": "vpn-infrastructure",
     "description": "Major transit and hosting provider for VPNs focused on circumventing Asian internet restrictions."
   }
 ]

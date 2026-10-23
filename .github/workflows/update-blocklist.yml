@@ -32,12 +32,12 @@ jobs:
           ./scripts/build-crowdsec.sh
 
       - name: Stage Output Files
-        run: git add -A vpn-blocklist.txt individual_blocklists/ crowdsec/
+        run: git add -A vpn-blocklist.txt individual_blocklists/ lists/ crowdsec/
 
       - name: Check for Changes
         id: git-diff
         run: |
-          git diff --cached --quiet -- vpn-blocklist.txt individual_blocklists/ crowdsec/ || echo "changes=true" >> $GITHUB_OUTPUT
+          git diff --cached --quiet -- vpn-blocklist.txt individual_blocklists/ lists/ crowdsec/ || echo "changes=true" >> $GITHUB_OUTPUT
 
       - name: Commit and Push Changes
         if: steps.git-diff.outputs.changes == 'true'
@@ -53,6 +53,9 @@ jobs:
           curl -s https://purge.jsdelivr.net/gh/aaronburt/vpn-block-list@main/vpn-blocklist.txt
           curl -s https://purge.jsdelivr.net/gh/aaronburt/vpn-block-list@main/crowdsec/decisions.csv
           curl -s https://purge.jsdelivr.net/gh/aaronburt/vpn-block-list@main/crowdsec/docker_crowdsec_ban_import.sh
+          for file in lists/*.txt; do
+            curl -s "https://purge.jsdelivr.net/gh/aaronburt/vpn-block-list@main/$file"
+          done
           for file in individual_blocklists/*.txt; do
             filename=$(basename "$file")
             curl -s "https://purge.jsdelivr.net/gh/aaronburt/vpn-block-list@main/individual_blocklists/$filename"
