@@ -27,14 +27,20 @@ The primary way to contribute to this project is by adding new VPN/Proxy/Data Ce
    ```
 4. Do not run the build scripts manually unless you are testing changes to the scripts themselves. The GitHub Action will automatically rebuild the lists when your changes are merged.
 
-### Testing Locally
+### Checks and Tests
 
-If you modify the build scripts (`scripts/build-blocklist.sh` or `scripts/build-crowdsec.sh`):
+Every pull request runs the **Checks** workflow, and the update workflow validates every generated list before it commits. To run the same checks locally you need `jq`, `curl`, `python3` and (for linting) `shellcheck`, `shfmt` and `ruff`:
 
-1. Ensure you have `jq` and `curl` installed on your system.
-2. Run the blocklist script: `./scripts/build-blocklist.sh`
-3. Run the CrowdSec script: `./scripts/build-crowdsec.sh`
-4. Verify the outputs in the `individual_blocklists/` and `crowdsec/` directories.
+```bash
+shellcheck scripts/*.sh crowdsec/*.sh
+shfmt -d scripts/*.sh   # shfmt reads .editorconfig
+ruff check . && ruff format --check .
+python3 -m pytest tests
+```
+
+The tests run the real build scripts offline against fixture data, then validate every published format: all lists are valid, canonical, sorted and fully collapsed, the `-ipv4`/`-ipv6` files match their combined list, the category and provider lists cover the combined list exactly, no private or reserved range is included, `decisions.csv` matches the list, and the README cron checksum matches the import script. You can run the same validation on your own build output with `python3 scripts/validate_outputs.py`.
+
+If you change `crowdsec/docker_crowdsec_ban_import.sh`, update the checksum in the README cron example; the tests fail until you do.
 
 ## Commit Message Guidelines
 

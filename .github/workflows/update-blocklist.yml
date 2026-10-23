@@ -9,6 +9,9 @@ on:
       - 'asn.json'
       - 'scripts/build-blocklist.sh'
       - 'scripts/build-crowdsec.sh'
+      - 'scripts/scan-overlaps.py'
+      - 'scripts/validate_outputs.py'
+      - 'crowdsec/docker_crowdsec_ban_import.sh'
 
 permissions:
   contents: write
@@ -31,13 +34,16 @@ jobs:
           chmod +x scripts/build-crowdsec.sh
           ./scripts/build-crowdsec.sh
 
+      - name: Validate Outputs
+        run: python3 scripts/validate_outputs.py
+
       - name: Stage Output Files
         run: git add -A vpn-blocklist*.txt individual_blocklists/ lists/ crowdsec/
 
       - name: Check for Changes
         id: git-diff
         run: |
-          git diff --cached --quiet -- 'vpn-blocklist*.txt' individual_blocklists/ lists/ crowdsec/ || echo "changes=true" >> $GITHUB_OUTPUT
+          git diff --cached --quiet -- 'vpn-blocklist*.txt' individual_blocklists/ lists/ crowdsec/ || echo "changes=true" >> "$GITHUB_OUTPUT"
 
       - name: Commit and Push Changes
         if: steps.git-diff.outputs.changes == 'true'

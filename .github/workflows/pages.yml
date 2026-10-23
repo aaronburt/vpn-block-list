@@ -41,6 +41,9 @@ jobs:
       - name: Build Manifest
         run: python3 scripts/build-manifest.py --out public/manifest.json
 
+      - name: Validate Outputs and Manifest
+        run: python3 scripts/validate_outputs.py --manifest public/manifest.json
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
