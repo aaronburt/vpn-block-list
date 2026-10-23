@@ -65,7 +65,7 @@ if [ "$missing" -gt "$MAX_MISSING_ASNS" ]; then
   exit 1
 fi
 
-"$PYTHON_BIN" "${SCRIPT_DIR}/scan-overlaps.py" --merge "$INDIVIDUAL_DIR"/*.txt "$CATEGORY_DIR"/*.txt "$OUTPUT_FILE"
+"$PYTHON_BIN" "${SCRIPT_DIR}/scan-overlaps.py" --merge --split "$INDIVIDUAL_DIR"/*.txt "$CATEGORY_DIR"/*.txt "$OUTPUT_FILE"
 
 new_count=$(grep -c . "$OUTPUT_FILE" || true)
 if [ "$previous_count" -gt 0 ] && [ $((new_count * 100)) -lt $((previous_count * (100 - MAX_SHRINK_PERCENT))) ]; then

@@ -14,6 +14,10 @@ The blocklist is rebuilt daily via GitHub Actions from public ASN prefix data. E
 - **Combined List**: [https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/vpn-blocklist.txt](https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/vpn-blocklist.txt)
 - **Individual Provider Lists**: Browse available files in the [`/individual_blocklists`](https://github.com/aaronburt/vpn-block-list/tree/main/individual_blocklists) directory and use them via `https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/individual_blocklists/<filename>.txt`.
 
+### IPv4 and IPv6 lists
+
+Every list (combined, category and individual provider) also has IPv4-only and IPv6-only versions next to it, named with an `-ipv4` or `-ipv6` suffix. For example `vpn-blocklist-ipv4.txt`, `lists/vpn-ipv6.txt` or `individual_blocklists/ovh-sas-ipv4.txt`. Use these for tools that need one address family per set, such as ipset, nftables sets and pfSense/OPNsense aliases. Both files always exist, even if one is empty.
+
 ### Category lists
 
 Every ASN in `asn.json` has a `category`, and each category is published as its own list. The combined `vpn-blocklist.txt` and the CrowdSec defaults still contain every category, so existing setups are unchanged.
@@ -56,14 +60,16 @@ By default the runner imports every category. To import only some, set `CATEGORI
 curl -sSL "https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/crowdsec/docker_crowdsec_ban_import.sh" | CATEGORIES="vpn vpn-infrastructure" bash
 ```
 
-The script is the same whichever categories you choose, so the checksum below still applies. In the cron entry, use `CATEGORIES="vpn vpn-infrastructure" bash /tmp/cs_import.sh` instead of `bash /tmp/cs_import.sh`.
+To import only one address family, set `FAMILY=ipv4` or `FAMILY=ipv6`. It works on its own or together with `CATEGORIES`.
+
+The script is the same whichever categories or family you choose, so the checksum below still applies. In the cron entry, use `CATEGORIES="vpn vpn-infrastructure" bash /tmp/cs_import.sh` instead of `bash /tmp/cs_import.sh`.
 
 ### Automation (Cron)
 
 To keep your CrowdSec blocklist automatically synchronized, you can add a daily cronjob. Open your root crontab (`sudo crontab -e`) and add the following entry to run the sync at 3:00 AM every day:
 
 ```bash
-0 3 * * * curl -sSL "https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/crowdsec/docker_crowdsec_ban_import.sh" -o /tmp/cs_import.sh && echo "c82f4b5b652caa0b23ffa082faf840150b0a0c97024f0921f1357a75d2b691f7  /tmp/cs_import.sh" | sha256sum -c - >/dev/null 2>&1 && bash /tmp/cs_import.sh >/dev/null 2>&1 && echo "$(date): SUCCESS" >> ~/cs_import.log || echo "$(date): FAILED" >> ~/cs_import.log; rm -f /tmp/cs_import.sh
+0 3 * * * curl -sSL "https://cdn.jsdelivr.net/gh/aaronburt/vpn-block-list@main/crowdsec/docker_crowdsec_ban_import.sh" -o /tmp/cs_import.sh && echo "7c801251a2ca94413ccfa8080abb352ff6975ccdecd2287f14e9777e5bb8b4cc  /tmp/cs_import.sh" | sha256sum -c - >/dev/null 2>&1 && bash /tmp/cs_import.sh >/dev/null 2>&1 && echo "$(date): SUCCESS" >> ~/cs_import.log || echo "$(date): FAILED" >> ~/cs_import.log; rm -f /tmp/cs_import.sh
 ```
 
 > [!WARNING]

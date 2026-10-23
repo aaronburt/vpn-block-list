@@ -1,7 +1,14 @@
+import os
 import sys
 import ipaddress
 
-def process_file(filepath, in_place=False):
+def write_networks(path, nets):
+    with open(path, 'w') as f:
+        for net in nets:
+            f.write(f"{net}\n")
+
+
+def process_file(filepath, in_place=False, split=False):
     v4 = []
     v6 = []
     invalid = 0
@@ -32,17 +39,20 @@ def process_file(filepath, in_place=False):
     print(f"{filepath}: {orig_total} -> {merged_total} ({diff} redundant prefixes, {invalid} invalid)")
 
     if in_place:
-        with open(filepath, 'w') as f:
-            for net in merged:
-                f.write(f"{net}\n")
+        write_networks(filepath, merged)
+
+    if split:
+        # Both files are always written so every list has stable -ipv4/-ipv6 URLs.
+        stem, ext = os.path.splitext(filepath)
+        write_networks(f"{stem}-ipv4{ext}", sorted(c4))
+        write_networks(f"{stem}-ipv6{ext}", sorted(c6))
 
 if __name__ == '__main__':
     args = sys.argv[1:]
-    in_place = False
-    if '--merge' in args:
-        in_place = True
-        args.remove('--merge')
+    in_place = '--merge' in args
+    split = '--split' in args
+    args = [a for a in args if a not in ('--merge', '--split')]
     if not args:
         args = ['vpn-blocklist.txt']
     for path in args:
-        process_file(path, in_place=in_place)
+        process_file(path, in_place=in_place, split=split)
