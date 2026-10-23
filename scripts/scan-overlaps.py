@@ -1,9 +1,10 @@
+import ipaddress
 import os
 import sys
-import ipaddress
+
 
 def write_networks(path, nets):
-    with open(path, 'w') as f:
+    with open(path, "w") as f:
         for net in nets:
             f.write(f"{net}\n")
 
@@ -12,7 +13,7 @@ def process_file(filepath, in_place=False, split=False):
     v4 = []
     v6 = []
     invalid = 0
-    with open(filepath, 'r') as f:
+    with open(filepath) as f:
         for line in f:
             line = line.strip()
             if not line:
@@ -36,7 +37,9 @@ def process_file(filepath, in_place=False, split=False):
     merged_total = len(merged)
     diff = orig_total - merged_total
 
-    print(f"{filepath}: {orig_total} -> {merged_total} ({diff} redundant prefixes, {invalid} invalid)")
+    print(
+        f"{filepath}: {orig_total} -> {merged_total} ({diff} redundant prefixes, {invalid} invalid)"
+    )
 
     if in_place:
         write_networks(filepath, merged)
@@ -47,12 +50,13 @@ def process_file(filepath, in_place=False, split=False):
         write_networks(f"{stem}-ipv4{ext}", sorted(c4))
         write_networks(f"{stem}-ipv6{ext}", sorted(c6))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     args = sys.argv[1:]
-    in_place = '--merge' in args
-    split = '--split' in args
-    args = [a for a in args if a not in ('--merge', '--split')]
+    in_place = "--merge" in args
+    split = "--split" in args
+    args = [a for a in args if a not in ("--merge", "--split")]
     if not args:
-        args = ['vpn-blocklist.txt']
+        args = ["vpn-blocklist.txt"]
     for path in args:
         process_file(path, in_place=in_place, split=split)

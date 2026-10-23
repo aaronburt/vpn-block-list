@@ -1,0 +1,57 @@
+name: Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Install Tools
+        run: |
+          pip install ruff==0.8.6
+          go install mvdan.cc/sh/v3/cmd/shfmt@v3.10.0
+          go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.7
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      - name: ShellCheck
+        run: shellcheck scripts/*.sh crowdsec/*.sh
+
+      # The CrowdSec import script is not format-checked yet: reformatting it changes
+      # the checksum users pin in their cron jobs. Add it when the script next changes.
+      - name: shfmt
+        run: shfmt -d scripts/*.sh
+
+      - name: Ruff Lint
+        run: ruff check .
+
+      - name: Ruff Format
+        run: ruff format --check .
+
+      - name: actionlint
+        run: actionlint
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Install pytest
+        run: pip install pytest==8.3.4
+
+      - name: Run Tests
+        run: python3 -m pytest -q tests

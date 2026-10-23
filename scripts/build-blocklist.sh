@@ -20,13 +20,13 @@ fi
 mkdir -p "$ASN_LIST_DIR"
 rm -rf "$INDIVIDUAL_DIR" "$CATEGORY_DIR"
 mkdir -p "$INDIVIDUAL_DIR" "$CATEGORY_DIR"
-> "$OUTPUT_FILE"
+: > "$OUTPUT_FILE"
 
 mapfile -t asn_rows < <(jq -r '.[] | [.asn, .name, (.category // "uncategorized"), (.description // "")] | @tsv' "$ASN_JSON")
 
 curl_config=$(mktemp)
 for row in "${asn_rows[@]}"; do
-  IFS=$'\t' read -r asn name category desc <<< "$row"
+  IFS=$'\t' read -r asn name category _desc <<< "$row"
   echo "url = \"https://cdn.jsdelivr.net/gh/ipverse/as-ip-blocks/as/${asn}/aggregated.json\"" >> "$curl_config"
   echo "output = \"$ASN_LIST_DIR/${asn}.json\"" >> "$curl_config"
 done
@@ -36,7 +36,7 @@ rm -f "$curl_config"
 
 missing=0
 for row in "${asn_rows[@]}"; do
-  IFS=$'\t' read -r asn name category desc <<< "$row"
+  IFS=$'\t' read -r asn name category _desc <<< "$row"
   target_file="$ASN_LIST_DIR/${asn}.json"
 
   if [ ! -s "$target_file" ]; then
@@ -51,7 +51,7 @@ for row in "${asn_rows[@]}"; do
   category_file="$CATEGORY_DIR/${safe_category:-uncategorized}.txt"
 
   # Validation happens in scan-overlaps.py, which uses Python's ipaddress module.
-  prefixes=$(jq -r '.prefixes.ipv4[]?, .prefixes.ipv6[]?' "$target_file" 2>/dev/null | awk 'NF && !seen[$0]++' || true)
+  prefixes=$(jq -r '.prefixes.ipv4[]?, .prefixes.ipv6[]?' "$target_file" 2> /dev/null | awk 'NF && !seen[$0]++' || true)
 
   if [ -n "$prefixes" ]; then
     echo "$prefixes" >> "$indiv_file"
