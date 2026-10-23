@@ -1,4 +1,4 @@
-# Contributing to Traefik VPN Blocklist
+# Contributing to VPN Blocklist
 
 Thank you for your interest in contributing! Contributions from the community help keep this blocklist accurate and up-to-date.
 

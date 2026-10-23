@@ -4,12 +4,18 @@ import ipaddress
 def process_file(filepath, in_place=False):
     v4 = []
     v6 = []
+    invalid = 0
     with open(filepath, 'r') as f:
         for line in f:
             line = line.strip()
             if not line:
                 continue
-            net = ipaddress.ip_network(line)
+            try:
+                net = ipaddress.ip_network(line, strict=False)
+            except ValueError:
+                print(f"{filepath}: skipping invalid prefix {line!r}", file=sys.stderr)
+                invalid += 1
+                continue
             if net.version == 4:
                 v4.append(net)
             else:
@@ -23,7 +29,7 @@ def process_file(filepath, in_place=False):
     merged_total = len(merged)
     diff = orig_total - merged_total
 
-    print(f"{filepath}: {orig_total} -> {merged_total} ({diff} redundant prefixes)")
+    print(f"{filepath}: {orig_total} -> {merged_total} ({diff} redundant prefixes, {invalid} invalid)")
 
     if in_place:
         with open(filepath, 'w') as f:
