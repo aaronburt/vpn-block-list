@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VPN Blocklist Builder</title>
+<style>
+  :root {
+    --bg: #f7f7f5; --panel: #ffffff; --text: #1d1d1f; --muted: #6b6b70;
+    --border: #e2e2e0; --accent: #2557d6; --code-bg: #f0f0ee; --error: #b42318;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141416; --panel: #1d1d20; --text: #ececee; --muted: #9a9aa2;
+      --border: #303035; --accent: #7aa2ff; --code-bg: #26262a; --error: #ff8a80;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  h2 { font-size: 1.05rem; margin: 0 0 12px; }
+  p.lead { color: var(--muted); margin: 0 0 24px; }
+  section { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 16px; }
+  label { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; cursor: pointer; }
+  label small { display: block; color: var(--muted); }
+  .row { display: flex; flex-wrap: wrap; gap: 16px; }
+  .field { display: flex; flex-direction: column; gap: 4px; min-width: 160px; }
+  .field span { font-size: 0.85rem; color: var(--muted); }
+  input[type=text], input[type=time] { font: inherit; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); }
+  pre { background: var(--code-bg); border-radius: 8px; padding: 12px; margin: 0; overflow-x: auto; white-space: pre-wrap; word-break: break-all; font: 13px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .out { margin-bottom: 14px; }
+  .out-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  button { font: inherit; font-size: 0.85rem; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--panel); color: var(--accent); cursor: pointer; }
+  .error { color: var(--error); }
+  .muted { color: var(--muted); font-size: 0.85rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  a { color: var(--accent); }
+  .table-wrap { overflow-x: auto; }
+</style>
+</head>
+<body>
+<main>
+  <h1>VPN Blocklist Builder</h1>
+  <p class="lead">Pick the categories you want to block and copy a ready-made command. The CrowdSec commands verify the import script's SHA256 before running it.</p>
+
+  <section>
+    <h2>1. Categories</h2>
+    <div id="categories" class="muted">Loading…</div>
+  </section>
+
+  <section>
+    <h2>2. Options</h2>
+    <div class="row">
+      <div class="field"><span>CrowdSec container name</span><input id="container" type="text" value="crowdsec" spellcheck="false"></div>
+      <div class="field"><span>Daily sync time (cron)</span><input id="time" type="time" value="03:00"></div>
+    </div>
+    <label><input id="pin" type="checkbox" checked>
+      <span>Pin the import script to the current commit<small>The checksum always matches, and later script changes never break your cron job. The block list data itself still updates daily.</small></span>
+    </label>
+  </section>
+
+  <section>
+    <h2>3. Commands</h2>
+    <p id="error" class="error" hidden></p>
+    <div id="outputs"></div>
+  </section>
+
+  <section>
+    <h2>Providers</h2>
+    <div class="table-wrap"><table id="providers"></table></div>
+  </section>
+
+  <p class="muted">Source: <a href="https://github.com/aaronburt/vpn-block-list">aaronburt/vpn-block-list</a> · <span id="commit"></span></p>
+</main>
+
+<script>
+const CDN = 'https://cdn.jsdelivr.net/gh/';
+let manifest;
+
+const el = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmt = (n) => n.toLocaleString('en-US');
+
+function selectedCategories() {
+  return [...document.querySelectorAll('#categories input:checked')].map((i) => i.value);
+}
+
+function block(title, text) {
+  return `<div class="out"><div class="out-head"><strong>${esc(title)}</strong><button type="button" data-copy>Copy</button></div><pre>${esc(text)}</pre></div>`;
+}
+
+function render() {
+  const cats = selectedCategories();
+  const container = el('container').value.trim();
+  const [hour, minute] = (el('time').value || '03:00').split(':').map(Number);
+  const errors = [];
+  if (!cats.length) errors.push('Select at least one category.');
+  if (!/^[A-Za-z0-9][A-Za-z0-9_.-]*$/.test(container)) errors.push('Container name may only contain letters, numbers, ".", "_" and "-".');
+  el('error').hidden = !errors.length;
+  el('error').textContent = errors.join(' ');
+  if (errors.length) { el('outputs').innerHTML = ''; return; }
+
+  const repo = manifest.repo;
+  const ref = el('pin').checked ? manifest.commit : 'main';
+  const scriptUrl = `${CDN}${repo}@${ref}/${manifest.import_script.path}`;
+  const sha = manifest.import_script.sha256;
+
+  // Every category selected is the same as the default full list, so leave CATEGORIES unset.
+  const allSelected = cats.length === manifest.categories.length;
+  const env = [];
+  if (!allSelected) env.push(`CATEGORIES="${cats.join(' ')}"`);
+  if (container !== 'crowdsec') env.push(`CROWDSEC_CONTAINER="${container}"`);
+  const run = `${env.length ? env.join(' ') + ' ' : ''}bash /tmp/cs_import.sh`;
+  const fetchVerify = `curl -fsSL "${scriptUrl}" -o /tmp/cs_import.sh && echo "${sha}  /tmp/cs_import.sh" | sha256sum -c -`;
+
+  const once = `${fetchVerify} && ${run}; rm -f /tmp/cs_import.sh`;
+  const cron = `${minute} ${hour} * * * ${fetchVerify} >/dev/null 2>&1 && ${run} >/dev/null 2>&1 && echo "$(date): SUCCESS" >> ~/cs_import.log || echo "$(date): FAILED" >> ~/cs_import.log; rm -f /tmp/cs_import.sh`;
+
+  const listUrls = allSelected
+    ? `${CDN}${repo}@main/${manifest.combined.path}`
+    : manifest.categories.filter((c) => cats.includes(c.name)).map((c) => `${CDN}${repo}@main/${c.path}`).join('\n');
+
+  el('outputs').innerHTML =
+    block('CrowdSec: import once', once) +
+    block('CrowdSec: daily cron entry (sudo crontab -e)', cron) +
+    block(allSelected ? 'Plain list URL (one CIDR per line)' : 'Plain list URLs (one CIDR per line)', listUrls);
+}
+
+function init(data) {
+  manifest = data;
+  el('categories').innerHTML = data.categories.map((c) =>
+    `<label><input type="checkbox" value="${esc(c.name)}" checked><span><strong>${esc(c.name)}</strong><small>${fmt(c.asns)} ASNs · ${fmt(c.prefixes)} prefixes</small></span></label>`
+  ).join('');
+  el('categories').classList.remove('muted');
+
+  el('providers').innerHTML = '<tr><th>ASN</th><th>Provider</th><th>Category</th><th class="num">Prefixes</th></tr>' +
+    data.providers.map((p) =>
+      `<tr><td>AS${esc(p.asn)}</td><td><a href="${CDN}${esc(data.repo)}@main/${esc(p.path)}">${esc(p.name)}</a></td><td>${esc(p.category)}</td><td class="num">${fmt(p.prefixes)}</td></tr>`
+    ).join('');
+
+  el('commit').textContent = `built from ${data.commit.slice(0, 7)}`;
+  document.addEventListener('input', render);
+  document.addEventListener('change', render);
+  render();
+}
+
+document.addEventListener('click', (e) => {
+  if (!e.target.matches('[data-copy]')) return;
+  const text = e.target.closest('.out').querySelector('pre').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    e.target.textContent = 'Copied';
+    setTimeout(() => { e.target.textContent = 'Copy'; }, 1500);
+  });
+});
+
+fetch('manifest.json')
+  .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(init)
+  .catch(() => { el('categories').textContent = 'Could not load manifest.json.'; });
+</script>
+</body>
+</html>
