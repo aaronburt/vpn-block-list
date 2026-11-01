@@ -45,7 +45,7 @@ jobs:
         run: python3 scripts/validate_outputs.py --manifest public/manifest.json
 
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
