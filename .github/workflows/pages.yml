@@ -50,7 +50,7 @@ jobs:
       # Name the artifact per attempt: re-running a job keeps the earlier attempt's
       # artifact, and deploy-pages refuses to pick between two with the same name.
       - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: public
           name: github-pages-${{ github.run_attempt }}
